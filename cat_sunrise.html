@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20260223 · 运动量全景分析报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&display=swap');
+        body { font-family: 'Noto Sans SC', sans-serif; background-color: #f1f5f9; }
+        .phase-card { transition: all 0.3s ease; }
+        .phase-card:hover { transform: translateY(-5px); }
+        .gradient-hike { background: linear-gradient(135deg, #0f172a 0%, #334155 100%); }
+        .gradient-cat { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); }
+    </style>
+</head>
+<body class="pb-12 text-slate-800">
+
+    <header class="bg-white border-b border-slate-200 py-8 px-6 shadow-sm mb-8">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-extrabold text-slate-900 mb-2">2026.02.23 运动轨迹全景看板</h1>
+                <p class="text-slate-500 font-medium">白云山夜爬 <span class="mx-2 text-slate-300">|</span> 上门喂猫行程</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-right">
+                <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">当日总成就</div>
+                <div class="text-4xl font-black text-blue-600">25,376 <span class="text-lg">步</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            <div class="phase-card bg-white rounded-3xl shadow-md overflow-hidden border border-slate-100">
+                <div class="gradient-hike p-6 text-white">
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold">阶段一：凌晨 - 晨间</span>
+                        <i class="fas fa-mountain text-3xl opacity-50"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mt-4">白云山夜爬日出</h2>
+                    <p class="text-white/70 text-sm mt-1">00:00 - 10:00</p>
+                </div>
+                <div class="p-6 grid grid-cols-2 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-slate-400 text-xs mb-1 uppercase">运动量</div>
+                        <div class="text-xl font-bold">17,490 步</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-slate-400 text-xs mb-1 uppercase">爬升</div>
+                        <div class="text-xl font-bold text-blue-600">24 层</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-slate-400 text-xs mb-1 uppercase">能耗</div>
+                        <div class="text-xl font-bold text-rose-500">839 kcal</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-slate-400 text-xs mb-1 uppercase">距离</div>
+                        <div class="text-xl font-bold">11.54 km</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-card bg-white rounded-3xl shadow-md overflow-hidden border border-slate-100">
+                <div class="gradient-cat p-6 text-white">
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold">阶段二：下午 - 晚间</span>
+                        <i class="fas fa-cat text-3xl opacity-50"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mt-4">“猫保姆”城市穿梭</h2>
+                    <p class="text-white/70 text-sm mt-1">13:00 - 19:30</p>
+                </div>
+                <div class="p-6 grid grid-cols-2 gap-4">
+                    <div class="bg-orange-50 p-4 rounded-2xl text-center">
+                        <div class="text-orange-300 text-xs mb-1 uppercase">运动量</div>
+                        <div class="text-xl font-bold">6,414 步</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-2xl text-center">
+                        <div class="text-orange-300 text-xs mb-1 uppercase">行程数</div>
+                        <div class="text-xl font-bold text-orange-600">6 场上门</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-2xl text-center">
+                        <div class="text-orange-300 text-xs mb-1 uppercase">能耗</div>
+                        <div class="text-xl font-bold text-rose-500">160 kcal</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-2xl text-center">
+                        <div class="text-orange-300 text-xs mb-1 uppercase">距离</div>
+                        <div class="text-xl font-bold">4.27 km</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-md mb-10 border border-slate-100">
+            <h3 class="text-xl font-bold mb-6 flex items-center">
+                <i class="fas fa-chart-pie mr-3 text-indigo-500"></i> 运动深度对比分析
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h4 class="font-bold text-slate-700">运动强度 (Intensity)</h4>
+                    <p class="text-sm text-slate-500 mt-2">
+                        爬山阶段平均每千步消耗 <b>48大卡</b>，而喂猫阶段为 <b>25大卡</b>。说明爬山的“含金量”更高，坡度带来的心率提升让代谢效率翻倍。
+                    </p>
+                </div>
+                <div class="border-l-4 border-orange-500 pl-4">
+                    <h4 class="font-bold text-slate-700">琐碎运动 (NEAT)</h4>
+                    <p class="text-sm text-slate-500 mt-2">
+                        喂猫行程虽然步数较少，但分布极其平均（每半小时约 1000 步），这种高频率的非运动性热量消耗对维持血糖稳定非常有利。
+                    </p>
+                </div>
+                <div class="border-l-4 border-emerald-500 pl-4">
+                    <h4 class="font-bold text-slate-700">爬楼逻辑分析</h4>
+                    <p class="text-sm text-slate-500 mt-2">
+                        数据记录了下午 <b>3层</b> 的爬升，与你在棣园不同楼栋间的上门行程高度契合。白云山的24层主要是阶梯，而下午的爬楼则验证了你穿梭在不同楼层。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-md mb-10 border border-slate-100">
+            <h3 class="text-xl font-bold mb-6">全天步数节奏 (与行程对照)</h3>
+            <div class="relative h-80">
+                <canvas id="combinedChart"></canvas>
+            </div>
+
+            <div class="mt-8 overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="text-slate-400 border-b border-slate-100">
+                            <th class="pb-3">时间点</th>
+                            <th class="pb-3">行程内容</th>
+                            <th class="pb-3">对应数据表现</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-600">
+                        <tr class="border-b border-slate-50"><td class="py-3 font-medium">04:00 - 08:00</td><td>爬升白云山</td><td class="text-blue-500">步数巅峰，单小时峰值 4,985 步</td></tr>
+                        <tr class="border-b border-slate-50"><td class="py-3 font-medium text-orange-600">13:00</td><td>棣园 D1</td><td>步数回升，开启下午工作模式</td></tr>
+                        <tr class="border-b border-slate-50"><td class="py-3 font-medium text-orange-600">15:00 - 16:00</td><td>棣园 C1 连场</td><td>出现下午次高峰 (1463 步)，多点移动</td></tr>
+                        <tr><td class="py-3 font-medium text-orange-600">17:00</td><td>棣园 D1 巡回</td><td>保持 1068 步输出，最后一次移动</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const ctx = document.getElementById('combinedChart').getContext('2d');
+        const labels = Array.from({length: 24}, (_, i) => `${i}:00`);
+        const steps = [188, 246, 0, 242, 2561, 3195, 2841, 1793, 4985, 1439, 407, 106, 959, 886, 204, 1405, 1463, 1068, 1322, 66, 0, 0, 0, 0];
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '步数',
+                    data: steps,
+                    backgroundColor: (ctx) => {
+                        const h = ctx.dataIndex;
+                        if (h >= 4 && h <= 9) return 'rgba(15, 23, 42, 0.8)'; // Hike
+                        if (h >= 13 && h <= 18) return 'rgba(249, 115, 22, 0.8)'; // Cats
+                        return 'rgba(203, 213, 225, 0.5)';
+                    },
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: (items) => {
+                                const h = items[0].dataIndex;
+                                if (h >= 4 && h <= 9) return '🏔️ 登山时段';
+                                if (h >= 13 && h <= 18) return '🐱 喂猫行程';
+                                return '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
