@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 春节喂猫·铲屎官全维度结项报告</title>
+    <style>
+        :root {
+            --sage-green: #9CAF88;
+            --moss-green: #556B2F;
+            --soft-light: #F8F9F5;
+            --text-main: #2F3E33;
+            --white: #ffffff;
+            --accent: #EAECE6;
+            --badge-bg: rgba(156, 175, 136, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', 'PingFang SC', sans-serif;
+            background-color: var(--soft-light);
+            color: var(--text-main);
+            margin: 0; padding: 40px 20px;
+            display: flex; justify-content: center;
+        }
+
+        .master-container {
+            max-width: 1100px; width: 100%;
+            background: var(--white);
+            border-radius: 32px; padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.03);
+        }
+
+        header { text-align: center; margin-bottom: 50px; }
+        .mission-badge {
+            background: var(--sage-green); color: white;
+            padding: 6px 24px; border-radius: 100px;
+            font-size: 0.8rem; letter-spacing: 2px; font-weight: 600;
+        }
+        h1 { font-size: 2.4rem; color: var(--moss-green); margin: 15px 0 5px; }
+        .date-sub { color: #999; font-size: 1.1rem; }
+
+        /* 1. 核心看板 */
+        .metrics-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            margin-bottom: 40px;
+        }
+        .metric-card {
+            background: var(--soft-light); padding: 25px 15px;
+            border-radius: 20px; text-align: center; border: 1px solid var(--accent);
+        }
+        .metric-card .label { font-size: 0.8rem; color: var(--sage-green); display: block; margin-bottom: 5px; }
+        .metric-card .value { font-size: 1.6rem; font-weight: 800; color: var(--moss-green); }
+
+        h2 { font-size: 1.3rem; color: var(--moss-green); border-left: 5px solid var(--sage-green); padding-left: 15px; margin: 40px 0 20px; }
+
+        /* 新增：每日任务量统计趋势图 */
+        .trend-analysis {
+            background: #fff; border: 1px solid var(--accent);
+            border-radius: 24px; padding: 30px; margin-bottom: 40px;
+        }
+        .chart-wrapper {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            /*height: 200px; */
+            padding: 20px 10px; border-bottom: 2px solid var(--soft-light);
+        }
+        .chart-column {
+            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+        }
+        .chart-bar {
+            width: 40%; background: var(--sage-green); border-radius: 6px 6px 0 0;
+            transition: all 0.3s; opacity: 0.6; position: relative;
+        }
+        .chart-bar:hover { opacity: 1; filter: brightness(0.9); }
+        .chart-bar.peak { background: var(--moss-green); opacity: 0.9; }
+        .bar-count { font-size: 0.85rem; font-weight: 700; color: var(--moss-green); margin-bottom: 2px; }
+        .bar-date { font-size: 0.75rem; color: #999; margin-top: 10px; }
+
+        /* 2. 交互式日历 */
+        .calendar-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px; margin-bottom: 40px;
+        }
+        .day-card {
+            background: #fff; border: 1px solid var(--accent);
+            border-radius: 16px; padding: 15px;
+            display: flex; flex-direction: column; transition: all 0.3s;
+            height: fit-content;
+        }
+        .day-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--soft-light); padding-bottom: 10px; margin-bottom: 12px;
+        }
+        .day-title-wrap { display: flex; align-items: baseline; gap: 8px; }
+        .day-date { font-weight: 700; color: var(--moss-green); font-size: 1.1rem; }
+        .task-count {
+            background: var(--badge-bg); color: var(--moss-green);
+            font-size: 0.75rem; font-weight: 700;
+            padding: 2px 8px; border-radius: 10px;
+        }
+        .day-label { font-size: 0.7rem; color: #999; }
+        .holiday { color: #C0392B; font-weight: 600; }
+
+        .itinerary-list {
+            font-size: 0.8rem; list-style: none; padding: 0; margin: 0;
+            max-height: 150px; overflow: hidden; transition: max-height 0.5s ease;
+        }
+        .itinerary-list.expanded { max-height: 1000px; }
+        .itinerary-item { margin-bottom: 8px; color: #555; display: flex; align-items: flex-start; }
+        .itinerary-time { font-weight: 600; color: var(--sage-green); width: 45px; flex-shrink: 0; }
+        
+        .expand-btn {
+            margin-top: 10px; padding: 5px;
+            background: none; border: 1px dashed var(--sage-green);
+            color: var(--sage-green); font-size: 0.7rem; border-radius: 6px;
+            cursor: pointer; width: 100%;
+        }
+        .expand-btn:hover { background: var(--sage-green); color: white; }
+
+        /* 3. 数据分析 */
+        .analysis-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .bar-wrap { margin-bottom: 18px; }
+        .bar-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+        .bar-bg { background: var(--accent); height: 10px; border-radius: 5px; overflow: hidden; }
+        .bar-fill { background: var(--sage-green); height: 100%; border-radius: 5px; }
+
+        /* 4. 排行榜 */
+        .ranking-table { width: 100%; border-collapse: collapse; }
+        .ranking-table th { text-align: left; padding: 12px; color: #999; font-size: 0.8rem; border-bottom: 2px solid var(--soft-light); }
+        .ranking-table td { padding: 15px 12px; border-bottom: 1px solid var(--soft-light); font-size: 0.9rem; }
+        .rank-num { font-weight: 800; color: var(--sage-green); width: 30px; }
+        .price-text { font-weight: 700; color: var(--moss-green); }
+
+        footer { text-align: center; margin-top: 60px; font-size: 0.8rem; color: #ccc; border-top: 1px solid #EEE; padding-top: 20px; }
+
+        /* 柱状图统计：上门次数 */
+        .frequency-chart {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            /* height: 180px;  */
+            padding: 20px 0; margin-top: 20px;
+        }
+        .chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .bar { width: 40px; border-radius: 8px 8px 0 0; background: var(--sage-green); transition: 0.3s; opacity: 0.7; }
+        .bar:hover { opacity: 1; }
+        .bar-label { font-size: 0.75rem; color: #888; }
+        .bar-val { font-size: 0.85rem; font-weight: 600; color: var(--moss-green); }
+
+        @media (max-width: 850px) {
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            .analysis-row { grid-template-columns: 1fr; }
+            .master-container { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="master-container">
+    <header>
+        <span class="mission-badge">FINAL MASTER ARCHIVE 2026</span>
+        <h1>金牌铲屎官·全维度全行程复盘</h1>
+        <div class="date-sub">服务区间：2月15日 — 2月24日</div>
+    </header>
+
+    <div class="metrics-grid">
+        <div class="metric-card"><span class="label">总服务收入</span><span class="value">¥2,925</span></div>
+        <div class="metric-card"><span class="label">累计服务萌宠</span><span class="value">45<small style="font-weight:400;font-size:0.8rem"> 只</small></span></div>
+        <div class="metric-card"><span class="label">累计上门次数</span><span class="value">86<small style="font-weight:400;font-size:0.8rem"> 次</small></span></div>
+        <div class="metric-card"><span class="label">平均客单价</span><span class="value">¥121.9</span></div>
+    </div>
+
+    <section>
+        <h2>📊 订单上门频率分布 (订单量统计)</h2>
+        <div class="frequency-chart">
+            <div class="chart-col">
+                <span class="bar-val">5单</span>
+                <div class="bar" style="height: 50%;"></div>
+                <span class="bar-label">1次/单</span>
+            </div>
+            <div class="chart-col">
+                <span class="bar-val">4单</span>
+                <div class="bar" style="height: 40%;"></div>
+                <span class="bar-label">2次/单</span>
+            </div>
+            <div class="chart-col">
+                <span class="bar-val">7单</span>
+                <div class="bar" style="height: 70%;"></div>
+                <span class="bar-label">3次/单</span>
+            </div>
+            <div class="chart-col">
+                <span class="bar-val">3单</span>
+                <div class="bar" style="height: 30%;"></div>
+                <span class="bar-label">4-5次/单</span>
+            </div>
+            <div class="chart-col">
+                <span class="bar-val">3单</span>
+                <div class="bar" style="height: 30%;"></div>
+                <span class="bar-label">6-7次/单</span>
+            </div>
+            <div class="chart-col">
+                <span class="bar-val">2单</span>
+                <div class="bar" style="height: 20%;"></div>
+                <span class="bar-label">8次/单</span>
+            </div>
+        </div>
+        <p style="font-size: 0.85rem; color: #999; margin-top: 20px; text-align: center;">
+            * 统计显示 3次/单 是最主流的服务频率。8次/单 均为高粘度医疗护理单。
+        </p>
+    </section>
+
+    <section class="trend-analysis">
+        <h2>📊 每日任务量趋势分析 (每日上门场次)</h2>
+        <div class="chart-wrapper">
+            <div class="chart-column">
+                <span class="bar-count">5</span>
+                <div class="chart-bar" style="height: 33%;"></div>
+                <span class="bar-date">2.15</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">9</span>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <span class="bar-date">2.16</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">9</span>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <span class="bar-date">2.17</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">15</span>
+                <div class="chart-bar peak" style="height: 100%;"></div>
+                <span class="bar-date">2.18</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">15</span>
+                <div class="chart-bar peak" style="height: 100%;"></div>
+                <span class="bar-date">2.19</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">9</span>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <span class="bar-date">2.20</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">9</span>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <span class="bar-date">2.21</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">6</span>
+                <div class="chart-bar" style="height: 40%;"></div>
+                <span class="bar-date">2.22</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">6</span>
+                <div class="chart-bar" style="height: 40%;"></div>
+                <span class="bar-date">2.23</span>
+            </div>
+            <div class="chart-column">
+                <span class="bar-count">3</span>
+                <div class="chart-bar" style="height: 20%;"></div>
+                <span class="bar-date">2.24</span>
+            </div>
+        </div>
+        <p style="font-size: 0.85rem; color: #888; margin-top: 15px; text-align: center; font-style: italic;">
+            * 任务量在正月初二 (2.18) 与正月初三 (2.19) 到达峰值，单日最高负荷 15 场。
+        </p>
+    </section>
+
+    <h2>📅 每日行程轨迹统计 (共计 86 场)</h2>
+    <div class="calendar-grid">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.15</span><span class="task-count">5</span></div>
+                <span class="day-label">年廿八</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">14:20</span>9 棣园C5</li>
+                <li class="itinerary-item"><span class="itinerary-time">16:10</span>15 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">16:40</span>10 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:20</span>8 燕岗</li>
+                <li class="itinerary-item"><span class="itinerary-time">20:20</span>1 石溪</li>
+            </ul>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.16</span><span class="task-count">9</span></div>
+                <span class="day-label">年廿九</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">08:00</span>1 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">08:10</span>10 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">08:50</span>6 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">09:20</span>13 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">10:50</span>4 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">12:20</span>7 江南西</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:20</span>3 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:40</span>14 棣园B4</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:50</span>1 石溪</li>
+            </ul>
+            <button class="expand-btn" onclick="toggle(this)">展开全部</button>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.17</span><span class="task-count">9</span></div>
+                <span class="day-label holiday">初一</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">11:30</span>1 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">12:00</span>13 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:10</span>2 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:40</span>17 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:30</span>18 棣园C2</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:40</span>9 棣园C5</li>
+                <li class="itinerary-item"><span class="itinerary-time">16:00</span>11 棣园B1</li>
+                <li class="itinerary-item"><span class="itinerary-time">18:10</span>10 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">19:10</span>1 石溪</li>
+            </ul>
+            <button class="expand-btn" onclick="toggle(this)">展开全部</button>
+        </div>
+
+        <div class="day-card" style="border: 1px solid var(--sage-green);">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.18</span><span class="task-count" style="background:var(--sage-green); color:#fff">15</span></div>
+                <span class="day-label holiday">初二·巅峰</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">09:00</span>21 棣园A5</li>
+                <li class="itinerary-item"><span class="itinerary-time">10:40</span>1 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">11:10</span>15 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">11:30</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">12:40</span>8 燕岗</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:30</span>5 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:10</span>7 江南西</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:20</span>16 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:50</span>3 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">16:20</span>14 棣园B4</li>
+                <li class="itinerary-item"><span class="itinerary-time">19:20</span>10 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">19:40</span>1 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">20:00</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">21:10</span>19 棣园C2</li>
+                <li class="itinerary-item"><span class="itinerary-time">21:40</span>18 棣园C2</li>
+            </ul>
+            <button class="expand-btn" onclick="toggle(this)">展开全部行程</button>
+        </div>
+
+        <div class="day-card" style="border: 1px solid var(--sage-green);">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.19</span><span class="task-count" style="background:var(--sage-green); color:#fff">15</span></div>
+                <span class="day-label holiday">初三·巅峰</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">08:40</span>19 棣园C2</li>
+                <li class="itinerary-item"><span class="itinerary-time">09:20</span>1 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">10:00</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">10:40</span>13 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">11:30</span>6 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:00</span>2 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:20</span>17 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:10</span>9 棣园C5</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:00</span>11 棣园B1</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:20</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">18:00</span>10 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">18:20</span>19 棣园C2</li>
+                <li class="itinerary-item"><span class="itinerary-time">19:00</span>20 棣园D1</li>
+                <li class="itinerary-item"><span class="itinerary-time">20:00</span>23 海玥</li>
+                <li class="itinerary-item"><span class="itinerary-time">20:30</span>18 棣园C2</li>
+            </ul>
+            <button class="expand-btn" onclick="toggle(this)">展开全部行程</button>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.20</span><span class="task-count">9</span></div>
+                <span class="day-label">初四</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">08:50</span>19 棣园C2</li>
+                <li class="itinerary-item"><span class="itinerary-time">09:40</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">11:00</span>4 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">12:30</span>7 江南西</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:40</span>3 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:00</span>16 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:00</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:50</span>10 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">19:00</span>20 棣园D1</li>
+            </ul>
+            <button class="expand-btn" onclick="toggle(this)">展开全部</button>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.21</span><span class="task-count">9</span></div>
+                <span class="day-label">初五</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">08:50</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">09:40</span>13 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">11:20</span>15 石溪</li>
+                <li class="itinerary-item"><span class="itinerary-time">12:10</span>17 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">13:10</span>9 棣园C5</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:00</span>16 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">16:00</span>22 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:40</span>20 棣园D1</li>
+                <li class="itinerary-item"><span class="itinerary-time">19:00</span>19 棣园C2</li>
+            </ul>
+            <button class="expand-btn" onclick="toggle(this)">展开全部</button>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.22</span><span class="task-count">6</span></div>
+                <span class="day-label">初六</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">09:00</span>19 棣园C2</li>
+                <li class="itinerary-item"><span class="itinerary-time">09:10</span>16 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">09:40</span>24 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">10:50</span>6 石溪B</li>
+                <li class="itinerary-item"><span class="itinerary-time">11:00</span>25 棣园海玥</li>
+                <li class="itinerary-item"><span class="itinerary-time">12:00</span>20 棣园D1</li>
+            </ul>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.23</span><span class="task-count">6</span></div>
+                <span class="day-label">初七</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">13:00</span>20 棣园D1</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:00</span>9 棣园C5</li>
+                <li class="itinerary-item"><span class="itinerary-time">14:30</span>16 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:00</span>24 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">15:30</span>17 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:00</span>20 棣园D1</li>
+            </ul>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-title-wrap"><span class="day-date">2.24</span><span class="task-count">3</span></div>
+                <span class="day-label">初八</span>
+            </div>
+            <ul class="itinerary-list">
+                <li class="itinerary-item"><span class="itinerary-time">14:00</span>4 江泰路</li>
+                <li class="itinerary-item"><span class="itinerary-time">16:00</span>24 棣园C1</li>
+                <li class="itinerary-item"><span class="itinerary-time">17:00</span>20 棣园D1</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="analysis-row">
+        <div class="chart-box">
+            <h2>家庭构成维度</h2>
+            <div class="bar-wrap">
+                <div class="bar-info"><span>多宠家庭 (2只及以上)</span><span>62.5%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 62.5%;"></div></div>
+            </div>
+            <div class="bar-wrap">
+                <div class="bar-info"><span>单宠家庭</span><span>37.5%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 37.5%; opacity: 0.6;"></div></div>
+            </div>
+        </div>
+        <div class="chart-box">
+            <h2>服务属性维度</h2>
+            <div class="bar-wrap">
+                <div class="bar-info"><span>医疗/喂药/特殊单</span><span>25%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 25%; background: var(--moss-green);"></div></div>
+            </div>
+            <div class="bar-wrap">
+                <div class="bar-info"><span>日常喂养与清洁</span><span>75%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 75%; opacity: 0.7;"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <h2>🏆 订单总收益排行 Top 10</h2>
+        <table class="ranking-table">
+            <thead>
+                <tr><th>排行</th><th>项目</th><th>家庭详情</th><th>金额</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>01</td><td>22 石溪小区</td><td>1猫·8次 (核心喂药)</td><td class="price-text">¥ 280</td></tr>
+                <tr><td>02</td><td>20 棣园D1</td><td>3猫·7次 (含1免)</td><td class="price-text">¥ 270</td></tr>
+                <tr><td>03</td><td>1 石溪涌边</td><td>2猫·8次 (含喂药)</td><td class="price-text">¥ 265</td></tr>
+                <tr><td>04</td><td>10 石溪涌西</td><td>2猫·6次</td><td class="price-text">¥ 240</td></tr>
+                <tr><td>05</td><td>19 棣园C2</td><td>1猫·6次 (追加)</td><td class="price-text">¥ 180</td></tr>
+                <tr><td>06</td><td>17 江泰路</td><td>3猫·4次</td><td class="price-text">¥ 160</td></tr>
+                <tr><td>07</td><td>9 棣园C5</td><td>1猫·5次</td><td class="price-text">¥ 150</td></tr>
+                <tr><td>08</td><td>16 棣园C1</td><td>1猫·5次</td><td class="price-text">¥ 150</td></tr>
+                <tr><td>09</td><td>7 江南西</td><td>4猫·3次</td><td class="price-text">¥ 135</td></tr>
+                <tr><td>10</td><td>13 石溪B</td><td>1猫·4次</td><td class="price-text">¥ 120</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        © 2026 春节金牌铲屎官·结项档案 · 86场守护达成
+    </footer>
+</div>
+
+<script>
+    function toggle(btn) {
+        const list = btn.previousElementSibling;
+        const expanded = list.classList.toggle('expanded');
+        btn.innerText = expanded ? '收起行程' : '展开全部';
+    }
+</script>
+
+</body>
+</html>
